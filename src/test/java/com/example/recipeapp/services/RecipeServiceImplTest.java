@@ -1,11 +1,15 @@
 package com.example.recipeapp.services;
 
+import com.example.recipeapp.converters.RecipeCommandToRecipe;
+import com.example.recipeapp.converters.RecipeToRecipeCommand;
 import com.example.recipeapp.domain.Recipe;
 import com.example.recipeapp.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -14,18 +18,24 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class RecipeServiceImplTest {
 
+    @InjectMocks
     RecipeServiceImpl recipeService;
 
     @Mock
     RecipeRepository recipeRepository;
 
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.initMocks(this);
-
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
