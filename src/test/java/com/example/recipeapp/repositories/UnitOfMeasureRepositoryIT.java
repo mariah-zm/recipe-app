@@ -1,8 +1,8 @@
 package com.example.recipeapp.repositories;
 
 import com.example.recipeapp.domain.UnitOfMeasure;
-import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -19,7 +19,7 @@ public class UnitOfMeasureRepositoryIT {
     @Autowired
     UnitOfMeasureRepository unitOfMeasureRepository;
 
-    @Before
+    @BeforeEach
     public void setUp() {
     }
 
