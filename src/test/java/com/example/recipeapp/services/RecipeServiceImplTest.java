@@ -4,10 +4,12 @@ import com.example.recipeapp.commands.RecipeCommand;
 import com.example.recipeapp.converters.RecipeCommandToRecipe;
 import com.example.recipeapp.converters.RecipeToRecipeCommand;
 import com.example.recipeapp.domain.Recipe;
+import com.example.recipeapp.exceptions.NotFoundException;
 import com.example.recipeapp.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -40,7 +42,7 @@ class RecipeServiceImplTest {
     }
 
     @Test
-    public void getRecipeByIdTest() throws Exception {
+    public void getRecipeByIdTest() {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
         Optional<Recipe> recipeOptional = Optional.of(recipe);
@@ -55,7 +57,7 @@ class RecipeServiceImplTest {
     }
 
     @Test
-    public void getRecipesTest() throws Exception {
+    public void getRecipesTest() {
         Recipe recipe = new Recipe();
         HashSet<Recipe> recipesData = new HashSet<>();
         recipesData.add(recipe);
@@ -90,7 +92,7 @@ class RecipeServiceImplTest {
     }
 
     @Test
-    public void testDeleteById() throws Exception {
+    public void testDeleteById() {
 
         //given
         Long idToDelete = Long.valueOf(2L);
@@ -102,5 +104,15 @@ class RecipeServiceImplTest {
 
         //then
         verify(recipeRepository, times(1)).deleteById(anyLong());
+    }
+
+    @Test
+    public void getRecipeByIdTestNotFound() {
+
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        assertThrows(NotFoundException.class, () -> recipeService.findById(1L));
     }
 }
