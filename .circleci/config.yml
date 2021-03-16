@@ -2,7 +2,7 @@ version: 2
 jobs:
   maven/test:
     docker:
-      - image: cimg/openjdk:8-jdk
+      - image: cimg/openjdk:8.0
     steps:
       - checkout
       - run:
