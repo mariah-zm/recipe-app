@@ -9,7 +9,6 @@ import com.example.recipeapp.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -42,7 +41,7 @@ class RecipeServiceImplTest {
     }
 
     @Test
-    public void getRecipeByIdTest() {
+    public void getRecipeById() {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
         Optional<Recipe> recipeOptional = Optional.of(recipe);
@@ -57,7 +56,7 @@ class RecipeServiceImplTest {
     }
 
     @Test
-    public void getRecipesTest() {
+    public void getRecipes() {
         Recipe recipe = new Recipe();
         HashSet<Recipe> recipesData = new HashSet<>();
         recipesData.add(recipe);
@@ -72,7 +71,7 @@ class RecipeServiceImplTest {
     }
 
     @Test
-    public void getRecipeCommandByIdTest() {
+    public void getRecipeCommandById() {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
         Optional<Recipe> recipeOptional = Optional.of(recipe);
@@ -92,27 +91,28 @@ class RecipeServiceImplTest {
     }
 
     @Test
-    public void testDeleteById() {
+    public void deleteById() {
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        Optional<Recipe> recipeOptional = Optional.of(recipe);
 
-        //given
-        Long idToDelete = Long.valueOf(2L);
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
 
-        //when
-        recipeService.deleteById(idToDelete);
-
-        //no 'when', since method has void return type
+        recipeService.deleteById(1L);
 
         //then
         verify(recipeRepository, times(1)).deleteById(anyLong());
     }
 
     @Test
-    public void getRecipeByIdTestNotFound() {
+    public void deleteByIdNotFound() {
+        Long idToDelete = 2L;
 
-        Optional<Recipe> recipeOptional = Optional.empty();
+        assertThrows(NotFoundException.class, () -> recipeService.deleteById(idToDelete));
+    }
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
-
+    @Test
+    public void getRecipeByIdNotFound() {
         assertThrows(NotFoundException.class, () -> recipeService.findById(1L));
     }
 }
